@@ -1,60 +1,60 @@
 package com.example.studentapp.ui
 
+
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.studentapp.R
+import androidx.fragment.app.Fragment
+import com.example.studentapp.databinding.FragmentStudentDetailBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [StudentDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class StudentDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentStudentDetailBinding? = null
+    private val binding get() = _binding!!
+
+    companion object {
+        private const val ARG_NAME = "arg_name"
+        private const val ARG_ID = "arg_id"
+        private const val ARG_EMAIL = "arg_email"
+        private const val ARG_PHONE = "arg_phone"
+
+        // Hàm giúp truyền dữ liệu vào Fragment an toàn qua Bundle
+        fun newInstance(name: String, id: String, email: String, phone: String): StudentDetailFragment {
+            val fragment = StudentDetailFragment()
+            val args = Bundle().apply {
+                putString(ARG_NAME, name)
+                putString(ARG_ID, id)
+                putString(ARG_EMAIL, email)
+                putString(ARG_PHONE, phone)
+            }
+            fragment.arguments = args
+            return fragment
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_student_detail, container, false)
+    ): View {
+        _binding = FragmentStudentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment StudentDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            StudentDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Nhận dữ liệu truyền từ StudentListFragment sang
+        arguments?.let {
+            binding.tvDetailName.text = it.getString(ARG_NAME)
+            binding.tvDetailId.text = "Mã sinh viên: ${it.getString(ARG_ID)}"
+            binding.tvDetailEmail.text = "Email: ${it.getString(ARG_EMAIL)}"
+            binding.tvDetailPhone.text = "Số điện thoại: ${it.getString(ARG_PHONE)}"
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

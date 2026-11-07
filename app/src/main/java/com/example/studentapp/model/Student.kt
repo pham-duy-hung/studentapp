@@ -1,4 +1,8 @@
 package com.example.studentapp.model
 
-class Student {
-}
+data class Student(
+    val id: String,
+    val name: String,
+    val email: String,
+    val phone: String
+)
